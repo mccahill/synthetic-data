@@ -1,4 +1,12 @@
 Synthetic::Application.routes.draw do
+  resources :shiny_dockers do as_routes end
+
+  resources :sessions do as_routes end
+
+  resources :admins do as_routes end
+
+  resources :users do as_routes end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

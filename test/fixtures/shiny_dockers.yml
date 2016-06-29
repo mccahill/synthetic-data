@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  host: MyText
+  port: 1
+  pw: MyString
+  appname: MyString
+  appdesc: MyText
+  expired: false
+  netid: MyString
+
+two:
+  host: MyText
+  port: 1
+  pw: MyString
+  appname: MyString
+  appdesc: MyText
+  expired: false
+  netid: MyString
