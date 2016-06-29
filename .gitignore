@@ -14,3 +14,5 @@
 /log/*.log
 /tmp
 log
+config/database.yml
+config/synthetic-creds.yml
