@@ -1,0 +1,22 @@
+<div>
+	<ul class="nav nav-tabs">
+	  <li role="presentation" <% if params[:controller] == "admins" %>class="active"<% end %> >
+			<%= link_to "Admins", admins_path %> 
+		</li>
+	  <li <% if params[:controller] == 'users' %>class="active"<% end %> >
+			<%= link_to "Users", '/users' %>
+	   </li>
+	  <li <% if params[:controller] == 'sessions' %>class="active"<% end %> >
+			<%= link_to "Sessions", '/sessions' %>
+	   </li>
+	  <li <% if params[:controller] == 'downloads' %>class="active"<% end %> >
+			<%= link_to "Downloads", '/downloads' %>
+	   </li>
+	  <li <% if params[:controller] == 'phoneuploads' %>class="active"<% end %> >
+			<%= link_to "Phoneuploads", '/phoneuploads' %>
+	   </li>
+	  <li <% if params[:controller] == 'payloads' %>class="active"<% end %> >
+			<%= link_to "Payloads", '/payloads' %>
+	   </li>
+	</ul>	
+</div>

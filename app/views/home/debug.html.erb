@@ -1,0 +1,13 @@
+<h2>Synthetic Debug Page</h2>
+<b>Debug</b>
+
+<p><b>ENV['RAILS_ENV']</b><br><%=ENV['RAILS_ENV']%></p>
+<hr>
+<p><b>server</b> : <%=request.env['HTTP_HOST']%></p> 
+<p><b>@this_user.netid</b> : <%=@this_user.netid%></p>
+<p><b>@this_user.duid</b> : <%=@this_user.duid%></p>
+<p><b>@this_user.displayName</b> : <%=@this_user.displayName%></p>
+
+<hr>
+<p><b>request.env</b><br><%=request.env%></p>
+<hr>

@@ -1,11 +1,21 @@
 Synthetic::Application.routes.draw do
+  
   resources :shiny_dockers do as_routes end
-
   resources :sessions do as_routes end
-
   resources :admins do as_routes end
-
   resources :users do as_routes end
+
+
+  get "administration/index"
+
+  get "home/index"
+  match 'home/logout'=>'home#logout'
+  get 'home/log_the_app_install'
+
+  # convenient way to get a dump of the session and environment
+  get 'debug' => 'home#debug'
+
+  root :to => 'home#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
