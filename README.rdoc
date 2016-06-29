@@ -1,0 +1,13 @@
+== Synthetic
+
+Synthetic is a web app to map users to Docker containers running a RStudio Shiny app
+where they can design linear and logistic regression models to be fit against
+synthetic data.
+
+After the users have a model they like, they can submit the model to a private 
+backend that contains sensitive data. The user's regression will be run on the
+private backend which will then report back to the user the residuals for their 
+model when run against the actual data.
+
+
+
