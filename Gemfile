@@ -1,15 +1,17 @@
 source 'https://rubygems.org'
 
+
+gem 'sass', '~> 3.2.7'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass', '~> 3.1.10'
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.2'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier',     '>= 1.0.3'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', '~> 0.12.2', :platforms => :ruby
+  gem 'therubyracer', '~> 0.12.1', :platforms => :ruby
 end
 
 gem 'rails', '3.2.13'
@@ -38,5 +40,5 @@ group :development do
   gem 'thin'
   gem  'rvm-capistrano',  require: false
 #  gem 'rvm-capistrano', '1.4.4'
-  gem 'capistrano', '2.15.5'
+  gem 'capistrano', '2.15.4'
 end

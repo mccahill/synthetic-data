@@ -32,7 +32,7 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.3)
     builder (3.0.4)
-    capistrano (2.15.5)
+    capistrano (2.15.4)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -109,7 +109,7 @@ GEM
     rubyzip (1.2.0)
     rvm-capistrano (1.5.6)
       capistrano (~> 2.15.4)
-    sass (3.1.21)
+    sass (3.2.7)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -142,8 +142,8 @@ PLATFORMS
 
 DEPENDENCIES
   active_scaffold
-  capistrano (= 2.15.5)
-  coffee-rails (~> 3.2.2)
+  capistrano (= 2.15.4)
+  coffee-rails (~> 3.2.1)
   jquery-rails
   json (~> 1.8.1)
   mysql2 (= 0.3.20)
@@ -153,9 +153,9 @@ DEPENDENCIES
   rails (= 3.2.13)
   rubyzip
   rvm-capistrano
-  sass (~> 3.1.10)
-  sass-rails (~> 3.2.6)
-  therubyracer (~> 0.12.2)
+  sass (~> 3.2.7)
+  sass-rails (~> 3.2.3)
+  therubyracer (~> 0.12.1)
   thin
   uglifier (>= 1.0.3)
   will_paginate
