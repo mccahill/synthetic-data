@@ -1,14 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'mysql2', '0.3.20'
-
-gem 'net-ssh', '~> 2.8.0'
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -21,6 +12,15 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 end
+
+gem 'rails', '3.2.13'
+
+# Bundle edge Rails instead:
+# gem 'rails', :git => 'git://github.com/rails/rails.git'
+
+gem 'mysql2', '0.3.20'
+
+gem 'net-ssh', '~> 2.8.0'
 
 gem 'jquery-rails'
 
