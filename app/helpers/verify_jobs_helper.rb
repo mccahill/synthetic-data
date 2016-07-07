@@ -1,0 +1,2 @@
+module VerifyJobsHelper
+end

@@ -21,13 +21,19 @@
 <header id="branding" role="banner">
 	<div id="logo">
 		 <p><a href="http://www.duke.edu" tabindex="1" accesskey="1"><img src="/assets/struct/logo.png" width="141" height="64" alt="Duke University" /></a></p>
-     <h1><a href="/" rel="home" tabindex="2" accesskey="2">DukeApps</a></h1>
+     <h1><a href="/" rel="home" tabindex="2" accesskey="2">Synthetic</a></h1>
 	<ul id="mmenu">
-	  <li <% if params[:controller] == "home" and !(params[:action]=='too_many_vms') %>class="active"<% end %> >
+	  <li <% if params[:controller] == "home"  %>class="active"<% end %> >
 			<a href='/'>Home	</a>
 		</li>
+	  <li <% if params[:controller] == "containers"  %>class="active"<% end %> >
+			<a href='/containers'>Create_Model	</a>
+		</li>
+	  <li <% if params[:controller] == "verify_jobs"  %>class="active"<% end %> >
+			<a href='/verify_jobs'>Verify_Model	</a>
+		</li>
 		<% if session[:is_admin] %>
-	  <li <% if params[:controller] == "admin"  %>class="active"<% end %> >
+	  <li <% if params[:controller] == "administration"  %>class="active"<% end %> >
 			<a href='/administration/index'>Admin	</a>
 		</li>
 		<% end %>

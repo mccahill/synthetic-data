@@ -12,6 +12,8 @@ Synthetic::Application.routes.draw do
   resources :admins do as_routes end
   resources :users do as_routes end
 
+  resources :verify_jobs
+
 
   get "administration/index"
 

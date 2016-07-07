@@ -5,7 +5,7 @@ set :deploy_via, :export
 #set :repository, "."
 #set :scm, :none
 #set :deploy_via, :copy
-#set :copy_exclude, [".git/*", 'config/database.yml', 'config/dukeapps-creds.yml']
+#set :copy_exclude, [".git/*", 'config/database.yml', 'config/synthetic-creds.yml']
 
 set :vhost, 'synthetic.oit.duke.edu'
 

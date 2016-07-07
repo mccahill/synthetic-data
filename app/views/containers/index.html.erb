@@ -1,6 +1,6 @@
 <h2>Docker Containers</h2>
 <div id='wrapper'>
-<p>Welcome back <%= @user.displayName %>! </p>
+<p>Hello <%= @user.displayName %> ! </p>
 <% @user_app_collection.each do |one_app| %>
   <%= render partial: "app", locals: {this_app: one_app} %>
 <% end %>

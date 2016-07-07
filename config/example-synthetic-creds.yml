@@ -1,5 +1,5 @@
 # Configuration informaton for the Synthetic application
-# The app expects this file to be called {RAILS_ROOT}/config/dukeapps-creds.yml, so place it somewhere
+# The app expects this file to be called {RAILS_ROOT}/config/synthetic-creds.yml, so place it somewhere
 # secure (such as /etc/) and then create a link from the app dir tree
 # Information should not be packaged with the app in SVN for security reasons
 # This file ideally should only be accessible by the application itself
