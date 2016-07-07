@@ -6,6 +6,9 @@
 	  <li <% if params[:controller] == 'users' %>class="active"<% end %> >
 			<%= link_to "Users", '/users' %>
 	   </li>
+ 	  <li <% if params[:controller] == 'remote_jobs' %>class="active"<% end %> >
+ 			<%= link_to "Remote jobs", '/remote_jobs' %>
+ 	   </li>
 	  <li <% if params[:controller] == 'sessions' %>class="active"<% end %> >
 			<%= link_to "Sessions", '/sessions' %>
 	   </li>

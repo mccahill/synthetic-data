@@ -11,12 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160707152021) do
+ActiveRecord::Schema.define(:version => 20160707180114) do
 
   create_table "admins", :force => true do |t|
     t.string   "displayName"
     t.string   "netid"
     t.string   "duid"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "remote_jobs", :force => true do |t|
+    t.string   "netid"
+    t.string   "model"
+    t.string   "output_unit"
+    t.string   "epsilon"
+    t.boolean  "submitted"
+    t.boolean  "completeted"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

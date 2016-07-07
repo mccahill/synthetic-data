@@ -1,0 +1,2 @@
+module RemoteJobsHelper
+end

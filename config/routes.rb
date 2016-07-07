@@ -1,5 +1,13 @@
 Synthetic::Application.routes.draw do
   
+  resources :remote_jobs do as_routes end
+
+  get "containers/index"
+
+  get "containers/renew"
+
+  get "containers/show"
+
   resources :shiny_dockers do as_routes end
   resources :sessions do as_routes end
   resources :admins do as_routes end

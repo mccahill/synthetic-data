@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  netid: MyString
+  model: MyString
+  output_unit: MyString
+  epsilon: MyString
+  submitted: false
+  completeted: false
+
+two:
+  netid: MyString
+  model: MyString
+  output_unit: MyString
+  epsilon: MyString
+  submitted: false
+  completeted: false
