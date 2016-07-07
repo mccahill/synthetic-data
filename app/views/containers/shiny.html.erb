@@ -1,4 +1,15 @@
-<h2>CPS</h2>
+<h2>Shiny</h2>
 <div id='wrapper'>
 
-<p> hello </p>
+<p><h3>Shiny login referral page</h3><br><b>If your web browser asks if it is OK to submit this form, say yes</b></p>
+
+<script type="text/javascript">
+function openShinywindow() {
+  window.location.replace("https://<%=@docker_host%>:<%=@docker_port%>/?password=<%=@docker_guest_pw%>")
+}
+</script>
+
+<script type="text/javascript">
+window.onload=openShinywindow()
+</script>
+

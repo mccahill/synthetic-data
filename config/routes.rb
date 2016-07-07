@@ -5,10 +5,7 @@ Synthetic::Application.routes.draw do
   resources :containers
   match '/containers', :to => 'containers#index', :via => :get, :as =>"containers"
   match '/containers/shiny', :to => 'containers#shiny', :via => :get, :as =>"containers_shiny"  
-
-  get "containers/renew"
-
-  get "containers/show"
+  match '/containers/renew', :to => 'containers#renew', :via => :get, :as =>"containers_renew"  
 
   resources :shiny_dockers do as_routes end
   resources :sessions do as_routes end
