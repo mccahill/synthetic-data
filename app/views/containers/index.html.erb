@@ -1,2 +1,8 @@
-<h1>Containers#index</h1>
-<p>Find me in app/views/containers/index.html.erb</p>
+<h2>Docker Containers</h2>
+<div id='wrapper'>
+<p>Welcome back <%= @user.displayName %>! </p>
+<% @user_app_collection.each do |one_app| %>
+  <%= render partial: "app", locals: {this_app: one_app} %>
+<% end %>
+<hr>
+<p>&nbsp</p>

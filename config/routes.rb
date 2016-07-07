@@ -3,6 +3,7 @@ Synthetic::Application.routes.draw do
   resources :remote_jobs do as_routes end
 
   get "containers/index"
+  match '/containers/cps', :to => 'containers#cps', :via => :get, :as =>"containers_cps"  
 
   get "containers/renew"
 

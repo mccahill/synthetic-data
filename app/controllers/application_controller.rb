@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     @this_user.displayName = @displayName
     @this_user.save
     
-    session[:user_id] = @duid        
+    session[:user_id] = @netid         
     if Admin.find_by_netid( @netid )
       session[:is_admin] = true
     else

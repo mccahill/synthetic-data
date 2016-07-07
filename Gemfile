@@ -29,6 +29,7 @@ gem 'jquery-rails'
 #gem 'ruby-oci8'
 gem 'will_paginate'
 gem 'json', '~> 1.8.1'
+gem 'rest_client', '~> 1.8.2'
 gem 'rubyzip'
 
 # active scaffold for the admin pages
