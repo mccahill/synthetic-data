@@ -21,8 +21,8 @@ class ApplicationController < ActionController::Base
       @affiliation = request.env['affiliation'].split("@").first
     end
  
-    @this_user = User.find_or_create_by_duid(duid: @duid)
-    @this_user.netid = @netid
+    @this_user = User.find_or_create_by_netid(netid: @netid)
+    @this_user.duid = @duid
     @this_user.displayName = @displayName
     @this_user.save
     
