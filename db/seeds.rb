@@ -9,3 +9,7 @@
 Admin.delete_all
 Admin.create(:displayName => "Liz Wendland", :netid => "liz", :duid => '0489988')
 Admin.create(:displayName => "Mark McCahill", :netid => "mccahill", :duid => '0435319')
+
+User.delete_all
+User.create(:displayName => "Liz Wendland", :netid => "liz", :duid => '0489988')
+User.create(:displayName => "Mark McCahill", :netid => "mccahill", :duid => '0435319')
