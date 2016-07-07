@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160629200143) do
+ActiveRecord::Schema.define(:version => 20160707152021) do
 
   create_table "admins", :force => true do |t|
     t.string   "displayName"
@@ -37,8 +37,9 @@ ActiveRecord::Schema.define(:version => 20160629200143) do
     t.text     "appdesc"
     t.boolean  "expired"
     t.string   "netid"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "job_submit_token"
   end
 
   create_table "users", :force => true do |t|
