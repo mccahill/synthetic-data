@@ -1,4 +1,7 @@
 class ShinyDockersController < ApplicationController
+  before_filter :onlyAdmin
+  layout 'admin_base'
+  
   active_scaffold :"shiny_docker" do |conf|
     conf.label = 'Docker Containers'
     conf.actions = [:list, :search, :show]

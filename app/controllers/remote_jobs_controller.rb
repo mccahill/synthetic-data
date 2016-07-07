@@ -1,4 +1,7 @@
 class RemoteJobsController < ApplicationController
+  before_filter :onlyAdmin
+  layout 'admin_base'
+  
   active_scaffold :"remote_job" do |conf|
     conf.label = 'Remote Jobs'
     conf.actions = [:list, :search, :show]
