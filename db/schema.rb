@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160708171948) do
+ActiveRecord::Schema.define(:version => 20160708182309) do
 
   create_table "admins", :force => true do |t|
     t.string   "displayName"
@@ -22,16 +22,16 @@ ActiveRecord::Schema.define(:version => 20160708171948) do
   end
 
   create_table "remote_jobs", :force => true do |t|
-    t.string   "netid"
     t.string   "model"
     t.string   "output_unit"
     t.string   "epsilon"
     t.boolean  "submitted"
     t.boolean  "completeted"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "uploadfile"
     t.string   "opaque_id"
+    t.string   "job_submit_token"
   end
 
   create_table "sessions", :force => true do |t|

@@ -81,6 +81,10 @@ namespace :deploy do
   task :symlink_configs, :roles => :app do
     run "ln -s /etc/#{application}-creds.yml #{release_path}/config/#{application}-creds.yml"
     run "ln -s /etc/#{application}-database.yml #{release_path}/config/database.yml"
+    # symlink, then fix permissions on directories for file uploads used by carrierwave
+    run "ln -s #{shared_path}/uploads #{release_path}/uploads"
+    #run "chmod g+w #{release_path}/uploads/remote_job-cache"
+    #run "chmod g+w #{release_path}/uploads/remote_job/uploadfile"
   end
   task :symlink_locks, :roles => :app do
     run "mkdir -p #{shared_path}/locks"
