@@ -25,6 +25,9 @@ gem 'net-ssh', '~> 2.8.0'
 
 gem 'jquery-rails'
 
+# file upload gem
+gem 'carrierwave', '~> 0.11.2'
+
 #gem 'rbvmomi'
 #gem 'ruby-oci8'
 gem 'will_paginate'
