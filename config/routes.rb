@@ -2,9 +2,12 @@ Synthetic::Application.routes.draw do
   
   resources :remote_jobs do as_routes end
 
-  # the app_install heirarchy is not shib protected, so let's do our REST thing here
+  # the app_install heirarchy is not shib protected, so let's do our REST things here
   post 'app_install/remote_jobs' => 'remote_jobs#create'
-  put 'app_install/remote_jobs' => 'remote_jobs#update'
+  post 'app_install/awaiting_remote_processing' => 'remote_jobs#awaiting_remote_processing'
+  put  'app_install/starting_remote_processing' => 'remote_jobs#starting_remote_processing'
+  put  'app_install/completed_remote_processing' => 'remote_jobs#completed_remote_processing'
+  
  
   resources :containers
   match '/containers', :to => 'containers#index', :via => :get, :as =>"containers"

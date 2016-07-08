@@ -1,5 +1,7 @@
 class RemoteJobsController < ApplicationController
 
+  require 'securerandom'
+  
   ##############
   # Generally we assume that apps will be programatically posting files here
   # instead of users visiting the web pages, so this is mostly a REST-style interface
@@ -14,21 +16,44 @@ class RemoteJobsController < ApplicationController
   #         --form "model=this ~ is^2 + a * model" \
   #         --form "epsilon=0.9" \
   #         --form "output_unit=1000" \
-  #         http://localhost:3000/remote_jobs
+  #         http://localhost:3000/app_install/remote_jobs
   #
   # periodically, the backend processor in the protected data enclave asks for a list of
   # jobs that it should process like this:
   #
-  # then, after the backend processor in the protected data enclave is done, 
+  #   curl -X POST \
+  #        -H "Content-Type: multipart/form-data" \
+  #        -H "Accept: application/json" \
+  #        http://localhost:3000/app_install/awaiting_remote_processing      
+  #
+  # the results returned will look like this:
+  #
+  #     [{"status":"OK"},
+  #        [{"opaque_id":"953170ab-d039-42e2-bf48-aaaa94f72b5a"},
+  #         {"opaque_id":"f24449f5-3cc2-4f6f-8f9f-e66e2a078afd"}]]
+  #
+  # Now that the backend processor knows the opaque_ids for jobs needing processing it can fetch
+  # them (one at a time), and start processing by calling app_install/starting_remote_processing.
+  # Here is how the backend processor signals that it is starting:
+  #
+  #    curl -X PUT \
+  #         -H "Content-Type: multipart/form-data" \
+  #         -H "Accept: application/json" \
+  #         --form "opaque_id=953170ab-d039-42e2-bf48-aaaa94f72b5a" \
+  #         http://localhost:3000/app_install/starting_remote_processing
+  #
+  # Note that app_install/starting_remote_processing has the side effect of marking the job as 
+  # having been submitted (so it is not returned in later calls to app_install/awaiting_remote_processing)
+  #
+  # Finally, after the backend processor in the protected data enclave is done, 
   # it updates the record like this:
   #
   #   curl -X PUT \
   #        -H "Content-Type: multipart/form-data" \
   #        -H "Accept: application/json" \
+  #        --form "opaque_id=953170ab-d039-42e2-bf48-aaaa94f72b5a"
   #        --form "uploadfile=@pretty-output.png" \
-  #        http://localhost:3000/remote_jobs/5
-  #        something li
-  # ke this:
+  #        http://localhost:3000/app_install/completed_remote_processing       
   #
   #
   # For creating and updating jobs, the json returned will look something like this:
@@ -67,7 +92,10 @@ class RemoteJobsController < ApplicationController
     )
     @remote_job.completeted = false
     @remote_job.submitted = false
-    # generate an :opaque_id
+    
+    # generate an :opaque_id which we can use to identify this job independently of the id in the mysql table
+    @remote_job.opaque_id = SecureRandom.uuid
+    
     respond_to do |format|
       if @remote_job.save
         Session.create(:action => 'remote_job-OK', :netid => '', 
@@ -83,32 +111,51 @@ class RemoteJobsController < ApplicationController
       end
     end
   end
-   
-  # PUT /remote_jobs
-  # PUT /remote_jobs.json
   
-  def update
-    @article = Article.find(params[:id])
  
-    if @article.update(article_params)
-      redirect_to @article
-    else
-      render 'edit'
-    end
+  # POST /remote_jobs#awaiting_remote_processing.json  
+  def awaiting_remote_processing
+    # find the jobs that have not been submitted for remote processing yet
+    @unsubmitted_remote_jobs = RemoteJob.find_all_by_submitted(false)
+    @unsubmitted_remote_jobs.map! {|item| {opaque_id: item.opaque_id}}
+    respond_to do |format|
+        format.json { render json: [{:status => 'OK'}, @unsubmitted_remote_jobs] }
+    end   
   end
-  
-  def update
+ 
+
+  # PUT /remote_jobs#starting_remote_processing.json  
+  def starting_remote_processing
+    # find the jobs that have not been submitted for remote processing yet
+    @starting_remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
+    @starting_remote_job.submitted = true
+    respond_to do |format|
+        if @starting_remote_job.save
+          Session.create(:action => 'remote_job#starting_remote_processing-OK', :netid => '',  :notes => "#{params[:opaque_id]}")
+          format.json { render json: [{:status => 'OK'}, :updated_at => @starting_remote_job.updated_at], status: :updated }
+        else
+          Session.create(:action => 'remote_job#starting_remote_processing-ERROR', :netid => '', :notes => "#{params[:opaque_id]}")
+          format.html { render action: "new" }
+          format.json { render json: [{:status => 'ERROR'}, @starting_remote_job.errors], status: :unprocessable_entity }      
+        end
+    end   
+  end
+   
+   
+  # PUT /remote_jobs#completed_remote_processing
+  # PUT /remote_jobs#completed_remote_processing.json  
+  def completed_remote_processing
     # find the job
-    @remote_job = RemoteJob.find(params[:id])
+    @remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
     @remote_job.completeted = true
     @remote_job.uploadfile = params[:uploadfile]
     respond_to do |format|
       if @remote_job.save
-       Session.create(:action => 'remote_job#update-OK', :netid => '',  :notes => "#{@remote_job.model} - #{@remote_job.uploadfile}")
-        format.html { redirect_to @remote_job, notice: 'Remote_job was successfully created.' }
-        format.json { render json: [{:status => 'OK'}, :updated_at => @remote_job.updated_at], status: :created }
+       Session.create(:action => 'remote_job#completed_remote_processing-OK', :netid => '',  :notes => "#{@remote_job.opaque_id} - #{@remote_job.uploadfile}")
+        format.html { redirect_to @remote_job, notice: 'Remote_job was completed.' }
+        format.json { render json: [{:status => 'OK'}, :updated_at => @remote_job.updated_at], status: :updated }
       else
-        Session.create(:action => 'remote_job#update-ERROR', :netid => '', :notes => "#{@remote_job.model} - #{@remote_job.uploadfile}")
+        Session.create(:action => 'remote_job#completed_remote_processing-ERROR', :netid => '', :notes => "#{@remote_job.opaque_id} - #{@remote_job.uploadfile}")
         format.html { render action: "new" }
         format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
       end
