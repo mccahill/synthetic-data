@@ -83,31 +83,37 @@ class RemoteJobsController < ApplicationController
   # POST /remote_jobs.json
   def create
     # first validate that the job_submit_token is one we have heard of
-    # params[:job_submit_token]
-    @remote_job = RemoteJob.new(
-     {:job_submit_token => params[:job_submit_token],
-      :epsilon => params[:epsilon], 
-      :model => params[:model],
-      :output_unit => params[:output_unit]}
-    )
-    @remote_job.completeted = false
-    @remote_job.submitted = false
+    @request_submit_token = ShinyDocker.find_by_job_submit_token( params[:job_submit_token] )
+    if @request_submit_token.nil?
+      respond_to do |format|
+          Session.create(:action => 'remote_job-ERROR', :netid => '', :notes => "invalid job_submit_token: #{params[:job_submit_token]}")
+          format.html { render action: "new" }
+          format.json { render json: [{:status => 'ERROR'}, "invalid job_submit_token: #{params[:job_submit_token]}"], status: :unprocessable_entity }      
+      end
+    else
+      @remote_job = RemoteJob.new(
+       {:job_submit_token => params[:job_submit_token],
+        :epsilon => params[:epsilon], 
+        :model => params[:model],
+        :output_unit => params[:output_unit]}
+      )
+      @remote_job.completeted = false
+      @remote_job.submitted = false
     
-    # generate an :opaque_id which we can use to identify this job independently of the id in the mysql table
-    @remote_job.opaque_id = SecureRandom.uuid
+      # generate an :opaque_id which we can use to identify this job independently of the id in the mysql table
+      @remote_job.opaque_id = SecureRandom.uuid
     
-    respond_to do |format|
-      if @remote_job.save
-        Session.create(:action => 'remote_job-OK', :netid => '', 
-          :notes => "#{@remote_job.model} - #{@remote_job.epsilon} - #{@remote_job.output_unit}")
-        format.html { redirect_to @remote_job, notice: 'Remote_job was successfully created.' }
-        format.json { render json: [{:status => 'OK'}, :created_at => @remote_job.created_at], status: :created }
-#        format.json { render json: @remote_job, status: :created, location: @remote_job }
-      else
-        Session.create(:action => 'remote_job-ERROR', :netid => '', :notes => "#{@remote_job.model} - #{@remote_job.epsilon} - #{@remote_job.output_unit}")
-        format.html { render action: "new" }
-        format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
-#        format.json { render json: @remote_job.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @remote_job.save
+          Session.create(:action => 'remote_job-OK', :netid => '', 
+            :notes => "#{@remote_job.model} - #{@remote_job.epsilon} - #{@remote_job.output_unit}")
+          format.html { redirect_to @remote_job, notice: 'Remote_job was successfully created.' }
+          format.json { render json: [{:status => 'OK'}, :created_at => @remote_job.created_at], status: :created }
+        else
+          Session.create(:action => 'remote_job-ERROR', :netid => '', :notes => "#{@remote_job.model} - #{@remote_job.epsilon} - #{@remote_job.output_unit}")
+          format.html { render action: "new" }
+          format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
+        end
       end
     end
   end
@@ -126,7 +132,7 @@ class RemoteJobsController < ApplicationController
 
   # PUT /remote_jobs#starting_remote_processing.json  
   def starting_remote_processing
-    # find the jobs that have not been submitted for remote processing yet
+    # find the job that processing is going to start on
     @starting_remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
     @starting_remote_job.submitted = true
     respond_to do |format|
@@ -145,7 +151,7 @@ class RemoteJobsController < ApplicationController
   # PUT /remote_jobs#completed_remote_processing
   # PUT /remote_jobs#completed_remote_processing.json  
   def completed_remote_processing
-    # find the job
+    # find the job we are going to mark complete
     @remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
     @remote_job.completeted = true
     @remote_job.uploadfile = params[:uploadfile]
