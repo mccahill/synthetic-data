@@ -9,5 +9,50 @@ backend that contains sensitive data. The user's regression will be run on the
 private backend which will then report back to the user the residuals for their 
 model when run against the actual data.
 
+There are several components that make up the system, and we are using some REST-style
+web services to allow them to communicate. Here is the messaging lifecycle for a job:
+
+1.) user develops a model using the Shiny container and tells the container to submit
+submit it for processing
+
+curl -X POST \
+-H "Content-Type: multipart/form-data" \
+-H "Accept: application/json" \
+--form "job_submit_token=ggKFH29QUvdHuP4Fd4wrzukJkoTm" \
+--form "model=this ~ is^2 + a * model" \
+--form "epsilon=0.9" \
+--form "output_unit=1000" \
+https://synthetic.oit.duke.edu/app_install/remote_jobs
+
+
+2.) the backend processing service running in the secure bastion periodically
+fetches a list of jobs awaiting processing
+
+curl -X POST \
+-H "Content-Type: multipart/form-data" \
+-H "Accept: application/json" \
+https://synthetic.oit.duke.edu/app_install/awaiting_remote_processing
+
+
+3.) the backend processing service tells synthetic.oit.duke.edu 
+that it is starting to work on a job
+
+curl -X PUT \
+-H "Content-Type: multipart/form-data" \
+-H "Accept: application/json" \
+--form "opaque_id=0345e4-0691-4f4a-ac89-386072748" \
+https://synthetic.oit.duke.edu/app_install/starting_remote_processing
+
+
+4.) the backend processing service has completed the job and returns
+results to synthetic.oit.duke.edu
+
+ curl -X PUT \
+ -H "Content-Type: multipart/form-data" \
+ -H "Accept: application/json" \
+ --form "opaque_id=0345e4-0691-4f4a-ac89-386072748" \
+ --form "uploadfile=@DevOps.png" \
+https://synthetic.oit.duke.edu/app_install/completed_remote_processing
+
 
 
