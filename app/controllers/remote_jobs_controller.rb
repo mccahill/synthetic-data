@@ -106,11 +106,11 @@ class RemoteJobsController < ApplicationController
       respond_to do |format|
         if @remote_job.save
           Session.create(:action => 'remote_job-OK', :netid => '', 
-            :notes => "#{@remote_job.model} - #{@remote_job.epsilon} - #{@remote_job.output_unit}")
+            :notes => "token:#{params[:job_submit_token]} model:'#{@remote_job.model}' epsilon:'#{@remote_job.epsilon}' output_unit:'#{@remote_job.output_unit}'")
           format.html { redirect_to @remote_job, notice: 'Remote_job was successfully created.' }
           format.json { render json: [{:status => 'OK'}, :created_at => @remote_job.created_at], status: :created }
         else
-          Session.create(:action => 'remote_job-ERROR', :netid => '', :notes => "#{@remote_job.model} - #{@remote_job.epsilon} - #{@remote_job.output_unit}")
+          Session.create(:action => 'remote_job-ERROR', :netid => '', :notes => "token:#{params[:job_submit_token]} model:'#{@remote_job.model}' epsilon:'#{@remote_job.epsilon}' output_unit:'#{@remote_job.output_unit}'")
           format.html { render action: "new" }
           format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
         end

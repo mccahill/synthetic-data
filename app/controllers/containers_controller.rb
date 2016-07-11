@@ -63,7 +63,8 @@ class ContainersController < ApplicationController
           @docker_host = new_instance.host
           @docker_port = new_instance.port
           @docker_guest_pw = new_instance.pw  
-          #ActivityLog.log(session[:user_id], 'Docker containers',"Docker: #{user.netid} reserved #{container_type} at #{@docker_host}:#{@docker_port}" )                
+          Session.create(:action => 'container reservation', :netid => user.netid, 
+            :notes => "Docker: #{user.netid} reserved #{container_type} at #{@docker_host}:#{@docker_port}")                
         end
       else #send them to the instance they previously reserved
         @first_visit = false
@@ -74,7 +75,8 @@ class ContainersController < ApplicationController
       if container_type == 'shiny'           
         # shiny-specific code here 
       end
-      #ActivityLog.log(session[:user_id], 'Docker containers',"Docker: #{user.netid} logging into #{container_type} at #{@docker_host}:#{@docker_port}" )    
+      Session.create(:action => 'container login', :netid => user.netid, 
+        :notes => "Docker: #{user.netid} login #{container_type} at #{@docker_host}:#{@docker_port}")                
     end
     render :template => "containers/#{container_type.downcase}" 
   end
