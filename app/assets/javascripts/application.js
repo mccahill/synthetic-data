@@ -13,3 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+
+//= require active_scaffold
+
+// FLASH NOTICE ANIMATION
+var show_ajax_message = function(msg, type) {
+    $("#message_area").html('<div class="'+type+'">'+msg+'<br></div>');
+};
+

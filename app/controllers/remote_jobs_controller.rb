@@ -176,6 +176,8 @@ class RemoteJobsController < ApplicationController
   # so - everything below this line is app admin only
   #############################################################
   
+  
+   
 #  before_filter :onlyAdmin
   layout 'admin_base'
   
@@ -184,8 +186,8 @@ class RemoteJobsController < ApplicationController
     conf.actions = [:list, :search, :show]
     active_scaffold_config.search.live = true   #submit search terms as we type for more feedback
     conf.list.sorting = { :id => :desc}
-    conf.columns = [ :id, :opaque_id, :job_submit_token, :submitted, :completeted, :model, :epsilon, :output_unit, :uploadfile, :updated_at, :created_at ]
-  end
+    conf.columns = [ :id, :opaque_id, :job_submit_token, :submitted, :completeted, :model, :epsilon, :output_unit, :updated_at, :created_at ]
+   end
   
 	# Override authorize in application_controller.rb
   def authorize
