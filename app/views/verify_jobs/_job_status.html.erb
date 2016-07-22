@@ -1,0 +1,9 @@
+	id: <%=item.id%> <br>
+	model: <%=item.model%> <br>
+	epsilon: <%=item.epsilon%> <br>
+	output_unit: <%=item.output_unit%> <br>
+	submitted: <%=item.submitted%> <br>
+	<% if (item.completeted)  %> 
+		completed: <%=item.submitted%> <br>
+		<img src='/stream_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'><br><hr>
+	<% end %>

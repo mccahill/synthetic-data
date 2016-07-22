@@ -3,6 +3,6 @@
 <p>Hello <%= @user.displayName %> ! </p>
 <p>model verification job results go here</p>
 <hr>
-<p>&nbsp</p>
+<%= render partial: "job_status", collection: @jobs_for_this_user, as: :item %>
 
-			
+
