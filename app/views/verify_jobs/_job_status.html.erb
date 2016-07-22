@@ -4,14 +4,16 @@
 	output_unit: <b><%=item.output_unit%></b>&nbsp&nbsp&nbsp&nbsp
 	<% if item.completeted  %> 
 		<br>
-		<img src='/stream_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'><br><hr>
+		<a href='/stream_residual_png?the_opaque_job_id=<%=item.opaque_id%>' target="_blank"> 
+		<img src='/stream_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'></a>
 	<% else %>
 	    status: <b>
 		<%if item.submitted then%> 
 		  model is currently being processed
 		<%else%>
 		  awaiting processing
-		<%end%></b><br>
+		<%end%></b>
 	<% end %>
+	<br><hr>
 	
 	
