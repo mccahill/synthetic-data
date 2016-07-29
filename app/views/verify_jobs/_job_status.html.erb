@@ -10,16 +10,16 @@
 			<% if item.syntheticfile.length > 0 then %> 
 				<a href='/stream_synthetic_residual_png?the_opaque_job_id=<%=item.opaque_id%>' target="_blank"> 
 				<img src='/stream_synthetic_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'></a>
-			<%else%><hr>
-			  residuals not available
-			<%end%><hr>
+			<%else%>
+			  <hr>residuals not available<hr>
+			<%end%>
 	    </td>
 		<td style='width:360px;text-align:center;vertical-align:middle;'><br>
 			<% if item.verificationfile.length > 0   %> 
 				<a href='/stream_verification_residual_png?the_opaque_job_id=<%=item.opaque_id%>' target="_blank"> 
 				<img src='/stream_verification_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'></a>
-			<% else %><hr>
-			    status: <b>
+			<% else %>
+			    <hr>status: <b>
 				<%if item.submitted then%> 
 				  model is currently being processed
 				<%else%>
