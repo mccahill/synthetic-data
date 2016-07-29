@@ -21,6 +21,7 @@ Synthetic::Application.routes.draw do
 
   resources :verify_jobs
   match "/stream_verification_residual_png" => "verify_jobs#stream_verification_residual_png", :via => :get, :as =>"verify_jobs"
+  match "/stream_synthetic_residual_png" => "verify_jobs#stream_synthetic_residual_png", :via => :get, :as =>"verify_jobs"
 
 
   get "administration/index"
