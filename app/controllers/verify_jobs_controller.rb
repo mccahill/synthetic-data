@@ -19,7 +19,7 @@ class VerifyJobsController < ApplicationController
     this_opaque_job_id = params[:the_opaque_job_id]
     the_job = RemoteJob.find_by_opaque_id( this_opaque_job_id )
     unless the_job.nil?
-      a_file = the_job.uploadfile.url
+      a_file = the_job.verificationfile.url
       unless a_file.nil?
         # stream a file to the client with default type of application/octet-stream
         file_contents = File.read(a_file)

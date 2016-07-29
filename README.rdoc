@@ -51,7 +51,7 @@ results to synthetic.oit.duke.edu
  -H "Content-Type: multipart/form-data" \
  -H "Accept: application/json" \
  --form "opaque_id=0345e4-0691-4f4a-ac89-386072748" \
- --form "uploadfile=@DevOps.png" \
+ --form "verificationfile=@DevOps.png" \
 https://synthetic.oit.duke.edu/app_install/completed_remote_processing
 
 

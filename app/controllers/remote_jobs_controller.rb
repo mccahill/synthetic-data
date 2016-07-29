@@ -52,7 +52,7 @@ class RemoteJobsController < ApplicationController
   #        -H "Content-Type: multipart/form-data" \
   #        -H "Accept: application/json" \
   #        --form "opaque_id=953170ab-d039-42e2-bf48-aaaa94f72b5a"
-  #        --form "uploadfile=@pretty-output.png" \
+  #        --form "verificationfile=@pretty-output.png" \
   #        http://localhost:3000/app_install/completed_remote_processing       
   #
   #
@@ -154,14 +154,14 @@ class RemoteJobsController < ApplicationController
     # find the job we are going to mark complete
     @remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
     @remote_job.completeted = true
-    @remote_job.uploadfile = params[:uploadfile]
+    @remote_job.verificationfile = params[:verificationfile]
     respond_to do |format|
       if @remote_job.save
-       Session.create(:action => 'remote_job#completed_remote_processing-OK', :netid => '',  :notes => "#{@remote_job.opaque_id} - #{@remote_job.uploadfile}")
+       Session.create(:action => 'remote_job#completed_remote_processing-OK', :netid => '',  :notes => "#{@remote_job.opaque_id} - #{@remote_job.verificationfile}")
         format.html { redirect_to @remote_job, notice: 'Remote_job was completed.' }
         format.json { render json: [{:status => 'OK'}, :updated_at => @remote_job.updated_at], status: :updated }
       else
-        Session.create(:action => 'remote_job#completed_remote_processing-ERROR', :netid => '', :notes => "#{@remote_job.opaque_id} - #{@remote_job.uploadfile}")
+        Session.create(:action => 'remote_job#completed_remote_processing-ERROR', :netid => '', :notes => "#{@remote_job.opaque_id} - #{@remote_job.verificationfile}")
         format.html { render action: "new" }
         format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
       end

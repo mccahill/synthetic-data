@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160708182309) do
+ActiveRecord::Schema.define(:version => 20160729183943) do
 
   create_table "admins", :force => true do |t|
     t.string   "displayName"
@@ -29,9 +29,10 @@ ActiveRecord::Schema.define(:version => 20160708182309) do
     t.boolean  "completeted"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "uploadfile"
     t.string   "opaque_id"
     t.string   "job_submit_token"
+    t.string   "syntheticfile"
+    t.string   "verificationfile"
   end
 
   create_table "sessions", :force => true do |t|

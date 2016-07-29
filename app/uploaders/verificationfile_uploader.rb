@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class UploadfileUploader < CarrierWave::Uploader::Base
+class VerificationfileUploader < CarrierWave::Uploader::Base
 
   # Choose what kind of storage to use for this uploader:
   storage :file

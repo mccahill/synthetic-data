@@ -84,7 +84,7 @@ namespace :deploy do
     # symlink, then fix permissions on directories for file uploads used by carrierwave
     run "ln -s #{shared_path}/uploads #{release_path}/uploads"
     #run "chmod g+w #{release_path}/uploads/remote_job-cache"
-    #run "chmod g+w #{release_path}/uploads/remote_job/uploadfile"
+    #run "chmod g+w #{release_path}/uploads/remote_job/verificationfile"
   end
   task :symlink_locks, :roles => :app do
     run "mkdir -p #{shared_path}/locks"
