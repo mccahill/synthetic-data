@@ -20,7 +20,7 @@ Synthetic::Application.routes.draw do
   resources :users do as_routes end
 
   resources :verify_jobs
-  match "/stream_residual_png" => "verify_jobs#stream_residual_png", :via => :get, :as =>"verify_jobs"
+  match "/stream_verification_residual_png" => "verify_jobs#stream_verification_residual_png", :via => :get, :as =>"verify_jobs"
 
 
   get "administration/index"

@@ -14,8 +14,8 @@ class VerifyJobsController < ApplicationController
     end
   end
   
-  # GET /stream_residual_png?the_opaque_job_id=953170ab-d039-42e2-bf48-aaaa94f72b5a
-  def stream_residual_png
+  # GET /stream_verification_residual_png?the_opaque_job_id=953170ab-d039-42e2-bf48-aaaa94f72b5a
+  def stream_verification_residual_png
     this_opaque_job_id = params[:the_opaque_job_id]
     the_job = RemoteJob.find_by_opaque_id( this_opaque_job_id )
     unless the_job.nil?

@@ -4,8 +4,8 @@
 	output_unit: <b><%=item.output_unit%></b>&nbsp&nbsp&nbsp&nbsp
 	<% if item.completeted  %> 
 		<br>
-		<a href='/stream_residual_png?the_opaque_job_id=<%=item.opaque_id%>' target="_blank"> 
-		<img src='/stream_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'></a>
+		<a href='/stream_verification_residual_png?the_opaque_job_id=<%=item.opaque_id%>' target="_blank"> 
+		<img src='/stream_verification_residual_png?the_opaque_job_id=<%=item.opaque_id%>' style='width:304px;height:228px;'></a>
 	<% else %>
 	    status: <b>
 		<%if item.submitted then%> 
