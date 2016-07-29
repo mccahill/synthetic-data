@@ -95,7 +95,8 @@ class RemoteJobsController < ApplicationController
        {:job_submit_token => params[:job_submit_token],
         :epsilon => params[:epsilon], 
         :model => params[:model],
-        :output_unit => params[:output_unit]}
+        :output_unit => params[:output_unit],
+        :syntheticfile => params[:syntheticfile]}
       )
       @remote_job.completeted = false
       @remote_job.submitted = false
@@ -186,7 +187,7 @@ class RemoteJobsController < ApplicationController
 #    conf.actions = [:list, :search, :show]
     active_scaffold_config.search.live = true   #submit search terms as we type for more feedback
     conf.list.sorting = { :id => :desc}
-    conf.columns = [ :id, :opaque_id, :job_submit_token, :submitted, :completeted, :model, :epsilon, :output_unit, :updated_at, :created_at ]
+    conf.columns = [ :id, :opaque_id, :job_submit_token, :submitted, :completeted, :model, :epsilon, :output_unit, :syntheticfile, :updated_at, :created_at ]
    end
   
 	# Override authorize in application_controller.rb

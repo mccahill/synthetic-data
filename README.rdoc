@@ -13,7 +13,9 @@ There are several components that make up the system, and we are using some REST
 web services to allow them to communicate. Here is the messaging lifecycle for a job:
 
 1.) user develops a model using the Shiny container and tells the container to submit
-submit it for processing
+submit it for processing. Note that we can accept an image upload of the synthetic
+model's residuals - this is useful for comparing with the verification residuals image
+later in the process.
 
 curl -X POST \
 -H "Content-Type: multipart/form-data" \
@@ -22,6 +24,7 @@ curl -X POST \
 --form "model=this ~ is^2 + a * model" \
 --form "epsilon=0.9" \
 --form "output_unit=1000" \
+ --form "syntheticfile=@human-genome.png" \
 https://synthetic.oit.duke.edu/app_install/remote_jobs
 
 
