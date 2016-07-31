@@ -124,7 +124,10 @@ class RemoteJobsController < ApplicationController
   def awaiting_remote_processing
     # find the jobs that have not been submitted for remote processing yet
     @unsubmitted_remote_jobs = RemoteJob.find_all_by_submitted(false)
-    @unsubmitted_remote_jobs.map! {|item| {opaque_id: item.opaque_id}}
+    @unsubmitted_remote_jobs.map! {|item| {opaque_id: item.opaque_id, 
+                                           model: item.model, 
+                                           epsilon: item.epsilon, 
+                                           output_unit: item.output_unit}}
     respond_to do |format|
         format.json { render json: [{:status => 'OK'}, @unsubmitted_remote_jobs] }
     end   
