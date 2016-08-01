@@ -126,7 +126,9 @@ class RemoteJobsController < ApplicationController
   def legitimate_remote_verification_sender
     # do we trust the sender of this request? check the secret they sent
     legit = ( params[:verification_processor_token] == APP_CONFIG['remoteProcessorSecret'] )  
-    if !legit     
+    if !legit  
+      # log the error
+      Session.create(:action => 'remote_verification_sender-ERROR', :netid => '', :notes => "invalid verification_processor_token: #{params[:verification_processor_token]}")
       @remote_validation_result = 
                [{:status => 'ERROR'}, 
                 {:message => "Invalid verification_processor_token #{params[:verification_processor_token]}" }]      
