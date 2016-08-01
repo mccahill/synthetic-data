@@ -24,6 +24,7 @@ class RemoteJobsController < ApplicationController
   #   curl -X POST \
   #        -H "Content-Type: multipart/form-data" \
   #        -H "Accept: application/json" \
+  #        --form "verification_processor_token=jsdhf894tdhgfueytdbfh37ferf487" \
   #        http://localhost:3000/app_install/awaiting_remote_processing      
   #
   # the results returned will look like this:
@@ -122,15 +123,23 @@ class RemoteJobsController < ApplicationController
  
   # POST /remote_jobs#awaiting_remote_processing.json  
   def awaiting_remote_processing
-    # find the jobs that have not been submitted for remote processing yet
-    @unsubmitted_remote_jobs = RemoteJob.find_all_by_submitted(false)
-    @unsubmitted_remote_jobs.map! {|item| {opaque_id: item.opaque_id, 
-                                           model: item.model, 
-                                           epsilon: item.epsilon, 
-                                           output_unit: item.output_unit}}
-    respond_to do |format|
-        format.json { render json: [{:status => 'OK'}, @unsubmitted_remote_jobs] }
-    end   
+    # do we trust the send of this request? check the secret they sent
+    if ( params[:verification_processor_token] == APP_CONFIG['remoteProcessorSecret'] )
+      # find the jobs that have not been submitted for remote processing yet
+      @unsubmitted_remote_jobs = RemoteJob.find_all_by_submitted(false)
+      @unsubmitted_remote_jobs.map! {|item| {opaque_id: item.opaque_id, 
+                                             model: item.model, 
+                                             epsilon: item.epsilon, 
+                                             output_unit: item.output_unit}}
+      respond_to do |format|
+          format.json { render json: [{:status => 'OK'}, @unsubmitted_remote_jobs] }
+      end  
+    else
+      respond_to do |format|
+          format.json { render json: [{:status => 'ERROR'}, 
+                       {:message => "Invalid verification_processor_token #{params[:verification_processor_token]}" }] }
+      end        
+    end 
   end
  
 

@@ -8,6 +8,7 @@
 
 defaults: &DEFAULTS
    test: testing
+   remoteProcessorSecret: 96kFT0xUhw1XpHeASa1LyCPVgbhxGr
 
 development:
   <<: *DEFAULTS
