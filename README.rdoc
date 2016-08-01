@@ -29,11 +29,13 @@ https://synthetic.oit.duke.edu/app_install/remote_jobs
 
 
 2.) the backend processing service running in the secure bastion periodically
-fetches a list of jobs awaiting processing
+fetches a list of jobs awaiting processing. It identifies itself by sending a 
+secret verification_processor_token parameter in the request
 
 curl -X POST \
 -H "Content-Type: multipart/form-data" \
 -H "Accept: application/json" \
+--form "verification_processor_token=dYGrAGpr1OYydhgf87y4dhurg87h4HsKxL5" \
 https://synthetic.oit.duke.edu/app_install/awaiting_remote_processing
 
 
@@ -44,6 +46,7 @@ curl -X PUT \
 -H "Content-Type: multipart/form-data" \
 -H "Accept: application/json" \
 --form "opaque_id=0345e4-0691-4f4a-ac89-386072748" \
+--form "verification_processor_token=dYGrAGpr1OYydhgf87y4dhurg87h4HsKxL5" \
 https://synthetic.oit.duke.edu/app_install/starting_remote_processing
 
 
@@ -55,6 +58,7 @@ results to synthetic.oit.duke.edu
  -H "Accept: application/json" \
  --form "opaque_id=0345e4-0691-4f4a-ac89-386072748" \
  --form "verificationfile=@DevOps.png" \
+ --form "verification_processor_token=dYGrAGpr1OYydhgf87y4dhurg87h4HsKxL5" \
 https://synthetic.oit.duke.edu/app_install/completed_remote_processing
 
 

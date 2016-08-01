@@ -41,6 +41,7 @@ class RemoteJobsController < ApplicationController
   #         -H "Content-Type: multipart/form-data" \
   #         -H "Accept: application/json" \
   #         --form "opaque_id=953170ab-d039-42e2-bf48-aaaa94f72b5a" \
+  #         --form "verification_processor_token=jsdhf894tdhgfueytdbfh37ferf487" \
   #         http://localhost:3000/app_install/starting_remote_processing
   #
   # Note that app_install/starting_remote_processing has the side effect of marking the job as 
@@ -54,6 +55,7 @@ class RemoteJobsController < ApplicationController
   #        -H "Accept: application/json" \
   #        --form "opaque_id=953170ab-d039-42e2-bf48-aaaa94f72b5a"
   #        --form "verificationfile=@pretty-output.png" \
+  #        --form "verification_processor_token=jsdhf894tdhgfueytdbfh37ferf487" \
   #        http://localhost:3000/app_install/completed_remote_processing       
   #
   #
@@ -120,63 +122,82 @@ class RemoteJobsController < ApplicationController
     end
   end
   
+  
+  def legitimate_remote_verification_sender
+    # do we trust the sender of this request? check the secret they sent
+    legit = ( params[:verification_processor_token] == APP_CONFIG['remoteProcessorSecret'] )  
+    if !legit     
+      @remote_validation_result = 
+               [{:status => 'ERROR'}, 
+                {:message => "Invalid verification_processor_token #{params[:verification_processor_token]}" }]      
+    end
+    return( legit )
+  end
+ 
  
   # POST /remote_jobs#awaiting_remote_processing.json  
   def awaiting_remote_processing
-    # do we trust the send of this request? check the secret they sent
-    if ( params[:verification_processor_token] == APP_CONFIG['remoteProcessorSecret'] )
+    if legitimate_remote_verification_sender
       # find the jobs that have not been submitted for remote processing yet
       @unsubmitted_remote_jobs = RemoteJob.find_all_by_submitted(false)
       @unsubmitted_remote_jobs.map! {|item| {opaque_id: item.opaque_id, 
                                              model: item.model, 
                                              epsilon: item.epsilon, 
                                              output_unit: item.output_unit}}
-      respond_to do |format|
-          format.json { render json: [{:status => 'OK'}, @unsubmitted_remote_jobs] }
-      end  
-    else
-      respond_to do |format|
-          format.json { render json: [{:status => 'ERROR'}, 
-                       {:message => "Invalid verification_processor_token #{params[:verification_processor_token]}" }] }
-      end        
+       @remote_validation_result = [{:status => 'OK'}, @unsubmitted_remote_jobs] 
     end 
+    respond_to do |format|
+        format.json { render json: @remote_validation_result }
+    end  
   end
  
 
   # PUT /remote_jobs#starting_remote_processing.json  
   def starting_remote_processing
-    # find the job that processing is going to start on
-    @starting_remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
-    @starting_remote_job.submitted = true
-    respond_to do |format|
-        if @starting_remote_job.save
-          Session.create(:action => 'remote_job#starting_remote_processing-OK', :netid => '',  :notes => "#{params[:opaque_id]}")
-          format.json { render json: [{:status => 'OK'}, :updated_at => @starting_remote_job.updated_at], status: :updated }
-        else
-          Session.create(:action => 'remote_job#starting_remote_processing-ERROR', :netid => '', :notes => "#{params[:opaque_id]}")
-          format.html { render action: "new" }
-          format.json { render json: [{:status => 'ERROR'}, @starting_remote_job.errors], status: :unprocessable_entity }      
-        end
-    end   
+    if !legitimate_remote_verification_sender
+      respond_to do |format|
+          format.json { render json: @remote_validation_result }
+      end   
+    else
+      # find the job that processing is going to start on
+      @starting_remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
+      @starting_remote_job.submitted = true
+      respond_to do |format|
+          if @starting_remote_job.save
+            Session.create(:action => 'remote_job#starting_remote_processing-OK', :netid => '',  :notes => "#{params[:opaque_id]}")
+            format.json { render json: [{:status => 'OK'}, :updated_at => @starting_remote_job.updated_at], status: :updated }
+          else
+            Session.create(:action => 'remote_job#starting_remote_processing-ERROR', :netid => '', :notes => "#{params[:opaque_id]}")
+            format.html { render action: "new" }
+            format.json { render json: [{:status => 'ERROR'}, @starting_remote_job.errors], status: :unprocessable_entity }      
+          end
+      end 
+    end 
   end
    
    
   # PUT /remote_jobs#completed_remote_processing
   # PUT /remote_jobs#completed_remote_processing.json  
   def completed_remote_processing
-    # find the job we are going to mark complete
-    @remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
-    @remote_job.completeted = true
-    @remote_job.verificationfile = params[:verificationfile]
-    respond_to do |format|
-      if @remote_job.save
-       Session.create(:action => 'remote_job#completed_remote_processing-OK', :netid => '',  :notes => "#{@remote_job.opaque_id} - #{@remote_job.verificationfile}")
-        format.html { redirect_to @remote_job, notice: 'Remote_job was completed.' }
-        format.json { render json: [{:status => 'OK'}, :updated_at => @remote_job.updated_at], status: :updated }
-      else
-        Session.create(:action => 'remote_job#completed_remote_processing-ERROR', :netid => '', :notes => "#{@remote_job.opaque_id} - #{@remote_job.verificationfile}")
-        format.html { render action: "new" }
-        format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
+    if !legitimate_remote_verification_sender
+      respond_to do |format|
+          format.json { render json: @remote_validation_result }
+      end   
+    else
+      # find the job we are going to mark complete
+      @remote_job = RemoteJob.find_by_opaque_id(params[:opaque_id])
+      @remote_job.completeted = true
+      @remote_job.verificationfile = params[:verificationfile]
+      respond_to do |format|
+        if @remote_job.save
+         Session.create(:action => 'remote_job#completed_remote_processing-OK', :netid => '',  :notes => "#{@remote_job.opaque_id} - #{@remote_job.verificationfile}")
+          format.html { redirect_to @remote_job, notice: 'Remote_job was completed.' }
+          format.json { render json: [{:status => 'OK'}, :updated_at => @remote_job.updated_at], status: :updated }
+        else
+          Session.create(:action => 'remote_job#completed_remote_processing-ERROR', :netid => '', :notes => "#{@remote_job.opaque_id} - #{@remote_job.verificationfile}")
+          format.html { render action: "new" }
+          format.json { render json: [{:status => 'ERROR'}, @remote_job.errors], status: :unprocessable_entity }      
+        end
       end
     end
   end
