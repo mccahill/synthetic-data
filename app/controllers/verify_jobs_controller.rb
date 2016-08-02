@@ -9,7 +9,10 @@ class VerifyJobsController < ApplicationController
     docker_container = ShinyDocker.find_by_netid session[:user_id]
     if !(docker_container.nil?)
       user_job_submit_token = docker_container.job_submit_token
-      @jobs_for_this_user = RemoteJob.find_all_by_job_submit_token( user_job_submit_token )
+      # @jobs_for_this_user = RemoteJob.find_all_by_job_submit_token( user_job_submit_token )
+      @jobs_for_this_user = RemoteJob.find_by_sql("select * from remote_jobs 
+                                                   where job_submit_token = '#{user_job_submit_token}' 
+                                                   order by id desc")
       render
     end
   end
