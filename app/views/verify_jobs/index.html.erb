@@ -1,6 +1,7 @@
-<h2>Model verification job status</h2>
+<h2>Original data model verification jobs</h2>
 <div id='wrapper'>
-<p>Hello <%= @user.displayName %> ! </p>
+<p>Hello <%= @user.displayName %> ! <br>
+   Here are your model verification jobs</p>
 <hr>
 <%= render partial: "job_status", collection: @jobs_for_this_user, as: :item %>
 
