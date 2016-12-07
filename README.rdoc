@@ -17,6 +17,7 @@ submit it for processing. Note that we can accept an image upload of the synthet
 model's residuals - this is useful for comparing with the verification residuals image
 later in the process.
 
+```
 curl -X POST \
 -H "Content-Type: multipart/form-data" \
 -H "Accept: application/json" \
@@ -26,33 +27,35 @@ curl -X POST \
 --form "output_unit=1000" \
  --form "syntheticfile=@human-genome.png" \
 https://synthetic.oit.duke.edu/app_install/remote_jobs
-
+```
 
 2.) the backend processing service running in the secure bastion periodically
 fetches a list of jobs awaiting processing. It identifies itself by sending a 
 secret verification_processor_token parameter in the request
 
+```
 curl -X POST \
 -H "Content-Type: multipart/form-data" \
 -H "Accept: application/json" \
 --form "verification_processor_token=dYGrAGpr1OYydhgf87y4dhurg87h4HsKxL5" \
 https://synthetic.oit.duke.edu/app_install/awaiting_remote_processing
-
+```
 
 3.) the backend processing service tells synthetic.oit.duke.edu 
 that it is starting to work on a job
 
+```
 curl -X PUT \
 -H "Content-Type: multipart/form-data" \
 -H "Accept: application/json" \
 --form "opaque_id=0345e4-0691-4f4a-ac89-386072748" \
 --form "verification_processor_token=dYGrAGpr1OYydhgf87y4dhurg87h4HsKxL5" \
 https://synthetic.oit.duke.edu/app_install/starting_remote_processing
-
+```
 
 4.) the backend processing service has completed the job and returns
 results to synthetic.oit.duke.edu
-
+```
  curl -X PUT \
  -H "Content-Type: multipart/form-data" \
  -H "Accept: application/json" \
@@ -60,6 +63,9 @@ results to synthetic.oit.duke.edu
  --form "verificationfile=@DevOps.png" \
  --form "verification_processor_token=dYGrAGpr1OYydhgf87y4dhurg87h4HsKxL5" \
 https://synthetic.oit.duke.edu/app_install/completed_remote_processing
+```
+
+
 
 
 
