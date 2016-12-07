@@ -38,6 +38,9 @@ There are several components that make up the system
 - synthetic-data   https://github.com/mccahill/synthetic-data 
 - synthetic-shiny-container   https://github.com/mccahill/synthetic-shiny-container
 - synthetic-verification   https://github.com/mccahill/synthetic-verification
+- synthetic-verification-measures   https://github.com/mccahill/synthetic-verification-measures
+```
+
 
 Synthetic-data (this application) is presumed to have an authentication sertvice in 
 front of it (in our case Shibboleth) which passes to the Apache web server some environment
