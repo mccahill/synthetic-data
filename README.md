@@ -39,7 +39,6 @@ There are several components that make up the system
 - synthetic-shiny-container   https://github.com/mccahill/synthetic-shiny-container
 - synthetic-verification   https://github.com/mccahill/synthetic-verification
 - synthetic-verification-measures   https://github.com/mccahill/synthetic-verification-measures
-```
 
 
 Synthetic-data (this application) is presumed to have an authentication sertvice in 
