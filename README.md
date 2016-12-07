@@ -6,7 +6,7 @@ synthetic data.
 
 Synthetic data is used to allow regression modeling of datasets while preserving 
 privacy - we restrict the sorts of regression models that are allowed using parameters
-set based on differential provacy concerns. To do this, we use Shiny to construct
+set based on differential privacy concerns. To do this, we use Shiny to construct
 a user interface where the regression model is built by selecting terms and operations
 from menus.
 
