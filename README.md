@@ -1,14 +1,33 @@
-== Synthetic
+# Synthetic
 
 Synthetic is a web app to map users to Docker containers running a RStudio Shiny app
 where they can design linear and logistic regression models to be fit against
 synthetic data.
 
-After the users have a model they like, they can submit the model to a private 
-backend that contains sensitive data. The user's regression will be run on the
-private backend which will then report back to the user the residuals for their 
-model when run against the actual data.
+Synthetic data is used to allow regression modeling of datasets while preserving 
+privacy - we restrict the sorts of regression models that are allowed using parameters
+set based on differential provacy concerns. To do this, we use Shiny to construct
+a user interface where the regression model is built by selecting terms and operations
+from menus.
 
+Once a regression model has been built, the user can test it against a syntetic dataset.
+If the model looks interesting, the user may then want to see what the residuals are
+when the regression is run against the real data. But we don't want to provide users
+with un-mediated access to the (sensitive) real data, so the application allows them to
+submit their regression model to a private backend that contains sensitive data. 
+
+The user's regression will be run on the private backend which will then report back to 
+the user the residuals for their model when run against the actual data.
+
+The synthetic app acts as the coorintation point for all this. Users log into synthetic,
+and are mapped to a personal Docker container which runs the RStudio Shiny app. From the
+Shiny app they can request their model be submitted to the private backend. Their regression
+models, the residuals calculated from running the regression against the synthetic data, and 
+the residuals calculated from running the model against the actual (sensitive) data are
+stored in the synthetic web app so that users can refer to the results after the jobs have
+been run.
+
+## architecture
 There are several components that make up the system, and we are using some REST-style
 web services to allow them to communicate. Here is the messaging lifecycle for a job:
 
