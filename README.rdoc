@@ -17,7 +17,7 @@ submit it for processing. Note that we can accept an image upload of the synthet
 model's residuals - this is useful for comparing with the verification residuals image
 later in the process.
 
-```
+`
 curl -X POST \
 -H "Content-Type: multipart/form-data" \
 -H "Accept: application/json" \
@@ -27,7 +27,7 @@ curl -X POST \
 --form "output_unit=1000" \
  --form "syntheticfile=@human-genome.png" \
 https://synthetic.oit.duke.edu/app_install/remote_jobs
-```
+`
 
 2.) the backend processing service running in the secure bastion periodically
 fetches a list of jobs awaiting processing. It identifies itself by sending a 
