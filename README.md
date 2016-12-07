@@ -10,13 +10,19 @@ set based on differential provacy concerns. To do this, we use Shiny to construc
 a user interface where the regression model is built by selecting terms and operations
 from menus.
 
-Once a regression model has been built, the user can test it against a syntetic dataset.
+Once a regression model has been built, the user can test it against a synthetic dataset.
 If the model looks interesting, the user may then want to see what the residuals are
 when the regression is run against the real data. But we don't want to provide users
 with un-mediated access to the (sensitive) real data, so the application allows them to
-submit their regression model to a private backend that contains sensitive data. 
+submit their regression model the app, and a private backend then processes the model
+against the sensitive data without providing the user with direct access. 
 
-The user's regression will be run on the private backend which will then report back to 
+Since the regression model is limited to fields and operations that will not exceed 
+the differential privacy limits established for this data, we have some assurance that
+individually identifiable private data is not being leaked as a side effect of running
+the regression against the actual sensitive data. 
+
+After the user's regression is run on the private backend, it then reports back to 
 the user the residuals for their model when run against the actual data.
 
 The synthetic app acts as the coorintation point for all this. Users log into synthetic,
@@ -28,8 +34,30 @@ stored in the synthetic web app so that users can refer to the results after the
 been run.
 
 ## architecture
-There are several components that make up the system, and we are using some REST-style
-web services to allow them to communicate. Here is the messaging lifecycle for a job:
+There are several components that make up the system
+- synthetic-data   https://github.com/mccahill/synthetic-data 
+- synthetic-shiny-container   https://github.com/mccahill/synthetic-shiny-container
+- synthetic-verification   https://github.com/mccahill/synthetic-verification
+
+Synthetic-data (this application) is presumed to have an authentication sertvice in 
+front of it (in our case Shibboleth) which passes to the Apache web server some environment
+variables with the user's netID. We use the netID to track which user is mapped to which
+Docker container (i.e. synthetic-shiny-container) with the shiny_dockers mySQL table.
+When setting the app up you will need to use the admin interface to populate this table
+with the host/port/password/job_submit_token for the synthetic-shiny-container instances
+where the Shiny app is run for each user.
+
+After users are redirected to their synthetic-shiny-container, the Shiny app knows the
+job_submit_token to be used when posting jobs back to the synthetic-data application,
+and this token is used to identify which user the job came from.
+
+A cron task runs periodically to launch the synthetic-verification application, and this
+app processes the submitted model against the real data, then posts the results back to
+the synthetic-data app.
+
+
+## model verification REST calls
+Here is the messaging lifecycle for a model verification job:
 
 1.) user develops a model using the Shiny container and tells the container to submit
 submit it for processing. Note that we can accept an image upload of the synthetic
